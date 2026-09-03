@@ -1,978 +1,510 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CentroRochas</title>
-<link rel="icon" type="image/png" href="/favicon.png">
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centrorochas – Faça parte do ecossistema</title>
+  <link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/64ee410e3b1bad3b81f3a7bc/67b39ab38bb32132b219b2b6_webclip.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  :root{
-    --gold:        #F4B400;
-    --gold-deep:   #C98F00;
-    --gold-pale:   #FFD65C;
-    --green:       #1E9257;
-    --green-soft:  #2CB368;
-    --ink:         #0A2A20;
-    --ink-2:       #0E3A2C;
-    --cream:       #FFFBF0;
-    --text-dark:   #16231C;
-    --ring:        rgba(244,180,0,0.18);
-  }
-
-  *,*::before,*::after{ box-sizing:border-box; }
-  html,body{ margin:0; padding:0; }
-
-  body{
-    font-family:'Nunito', sans-serif;
-    background:var(--ink);
-    color:var(--cream);
-    -webkit-font-smoothing:antialiased;
-  }
-
-  h1,h2,h3, .display{
-    font-family:'Baloo 2', sans-serif;
-    margin:0;
-  }
-
-  a{ color:inherit; }
-
-  /* ---------------------------------- */
-  /* HERO SHELL                         */
-  /* ---------------------------------- */
-
-  .cr-hero{
-    position:relative;
-    min-height:100vh;
-    overflow:hidden;
-    background:
-      radial-gradient(120% 90% at 82% 8%, rgba(30,146,87,0.35) 0%, rgba(30,146,87,0) 55%),
-      radial-gradient(90% 70% at 10% 100%, rgba(244,180,0,0.16) 0%, rgba(244,180,0,0) 60%),
-      linear-gradient(160deg, #0C3226 0%, #0A2A20 45%, #081F18 100%);
-    display:flex;
-    flex-direction:column;
-  }
-
-  /* grain texture */
-  .cr-hero::before{
-    content:'';
-    position:absolute; inset:0;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-    mix-blend-mode:overlay;
-    pointer-events:none;
-    z-index:1;
-  }
-
-  /* decorative ring, echoes the circular frame in the brand photo cards */
-  .cr-ring{
-    position:absolute;
-    width:1100px; height:1100px;
-    right:-320px; top:-260px;
-    border:1px solid var(--ring);
-    border-radius:50%;
-    pointer-events:none;
-    z-index:1;
-  }
-  .cr-ring::after{
-    content:'';
-    position:absolute; inset:90px;
-    border:1px solid var(--ring);
-    border-radius:50%;
-  }
-
-  /* triangle stack, echoes the yellow/green triangle motif */
-  .cr-tri{
-    position:absolute;
-    left:-6%;
-    bottom:-8%;
-    width:min(46vw, 620px);
-    aspect-ratio:1.15/1;
-    pointer-events:none;
-    z-index:1;
-    opacity:0.9;
-  }
-  .cr-tri i{
-    position:absolute;
-    inset:0;
-    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
-  }
-  .cr-tri .t1{ background:var(--gold); transform:translate(6%,10%) scale(1); opacity:.95; }
-  .cr-tri .t2{ background:var(--green-soft); transform:translate(-2%,32%) scale(0.72); opacity:.9; }
-  .cr-tri .t3{ background:var(--gold-pale); transform:translate(18%,50%) scale(0.42); opacity:.85; }
-
-  /* ---------------------------------- */
-  /* TOP BAR / LOGO                      */
-  /* ---------------------------------- */
-
-  .cr-topbar{
-    position:relative; z-index:3;
-    display:flex; align-items:center;
-    padding:clamp(20px,3vw,36px) clamp(20px,5vw,64px) 0;
-  }
-
-  .cr-logo{
-    display:inline-flex; align-items:center;
-    text-decoration:none;
-    user-select:none;
-    background:var(--cream);
-    padding:10px 18px;
-    border-radius:14px;
-    box-shadow:0 10px 24px -10px rgba(0,0,0,0.45);
-  }
-  .cr-logo img{
-    display:block;
-    height:28px;
-    width:auto;
-  }
-
-  /* ---------------------------------- */
-  /* MAIN CONTENT                        */
-  /* ---------------------------------- */
-
-  .cr-wrap{
-    position:relative; z-index:3;
-    flex:1;
-    display:grid;
-    grid-template-columns:1.05fr 0.95fr;
-    gap:clamp(24px, 5vw, 72px);
-    align-items:center;
-    max-width:1280px;
-    margin:0 auto;
-    padding:clamp(28px,4vw,40px) clamp(20px,5vw,64px) clamp(48px,6vw,72px);
-    width:100%;
-  }
-
-  .cr-copy{ padding-top:12px; }
-
-  .cr-eyebrow{
-    display:inline-flex; align-items:center; gap:10px;
-    background:linear-gradient(180deg, rgba(244,180,0,0.16), rgba(244,180,0,0.05));
-    border:1px solid rgba(244,180,0,0.3);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 22px -14px rgba(0,0,0,0.6);
-    backdrop-filter:blur(8px);
-    color:var(--gold-pale);
-    font-family:'Nunito', sans-serif;
-    font-weight:700;
-    font-size:12.5px;
-    letter-spacing:0.05em;
-    text-transform:uppercase;
-    padding:9px 18px 9px 14px;
-    border-radius:999px;
-    margin-bottom:22px;
-    opacity:0;
-    animation:cr-rise .7s .05s cubic-bezier(.2,.8,.2,1) forwards;
-  }
-  .cr-eyebrow::before{
-    content:'';
-    width:6px; height:6px; border-radius:50%; flex:0 0 auto;
-    background:var(--green-soft);
-    box-shadow:0 0 0 3px rgba(44,179,104,0.22);
-    animation:cr-pulse 2.4s ease-in-out infinite;
-  }
-
-  .cr-h1{
-    font-size:clamp(2.1rem, 3.6vw, 3.4rem);
-    line-height:1.06;
-    font-weight:800;
-    color:var(--gold);
-    letter-spacing:-0.01em;
-    margin-bottom:20px;
-    opacity:0;
-    animation:cr-rise .7s .15s cubic-bezier(.2,.8,.2,1) forwards;
-  }
-  .cr-h1 em{
-    font-style:normal;
-    color:var(--cream);
-  }
-
-  .cr-sub{
-    font-size:clamp(1.02rem, 1.3vw, 1.2rem);
-    line-height:1.55;
-    color:rgba(255,251,240,0.86);
-    max-width:52ch;
-    margin-bottom:30px;
-    font-weight:600;
-    opacity:0;
-    animation:cr-rise .7s .25s cubic-bezier(.2,.8,.2,1) forwards;
-  }
-
-  .cr-pillars{
-    display:flex; flex-wrap:wrap; gap:12px;
-    opacity:0;
-    animation:cr-rise .7s .35s cubic-bezier(.2,.8,.2,1) forwards;
-  }
-  .cr-pillar{
-    display:flex; align-items:center; gap:10px;
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.12);
-    padding:11px 16px 11px 12px;
-    border-radius:14px;
-    font-weight:700;
-    font-size:14px;
-    color:var(--cream);
-    backdrop-filter:blur(6px);
-  }
-  .cr-pillar .ic{
-    width:26px; height:26px; flex:0 0 auto;
-    border-radius:8px;
-    display:flex; align-items:center; justify-content:center;
-    background:var(--green);
-    color:#fff;
-  }
-  .cr-pillar .ic svg{
-    width:15px; height:15px;
-    stroke:currentColor; fill:none;
-  }
-
-  @keyframes cr-rise{
-    from{ opacity:0; transform:translateY(16px); }
-    to{ opacity:1; transform:translateY(0); }
-  }
-
-  @keyframes cr-pulse{
-    0%,100%{ box-shadow:0 0 0 3px rgba(44,179,104,0.22); }
-    50%{ box-shadow:0 0 0 6px rgba(44,179,104,0.1); }
-  }
-
-  /* ---------------------------------- */
-  /* FORM CARD                           */
-  /* ---------------------------------- */
-
-  .cr-card{
-    position:relative;
-    background:var(--cream);
-    border-radius:26px;
-    padding:clamp(26px,3vw,38px);
-    box-shadow:0 30px 70px -20px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06);
-    opacity:0;
-    animation:cr-pop .75s .3s cubic-bezier(.2,.8,.2,1) forwards;
-  }
-  @keyframes cr-pop{
-    from{ opacity:0; transform:translateY(24px) scale(.97); }
-    to{ opacity:1; transform:translateY(0) scale(1); }
-  }
-  .cr-card::before{
-    content:'';
-    position:absolute; inset:-1px;
-    border-radius:27px;
-    padding:1px;
-    background:linear-gradient(135deg, var(--gold), transparent 40%);
-    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor; mask-composite:exclude;
-    pointer-events:none;
-  }
-
-  /* ---------------------------------- */
-  /* HUBSPOT FORM (hscr-)                */
-  /* nested inside .cr-card, tokens mapped to the hero palette */
-  /* ---------------------------------- */
-
-  .hscr-wrap {
-    --hscr-ink: var(--ink-2);
-    --hscr-muted: #5a6a5f;
-    --hscr-line: #EDE3C8;
-    --hscr-surface: #fff;
-    --hscr-surface-hover: #fff;
-    --hscr-brand: var(--green);
-    --hscr-brand-dark: var(--ink-2);
-    --hscr-brand-ring: rgba(30,146,87,.15);
-    --hscr-error: #B33B2E;
-    --hscr-error-bg: #FBEDEA;
-    --hscr-error-ring: rgba(179,59,46,.14);
-    max-width: none;
-    font-family: 'Nunito', sans-serif;
-    color: var(--text-dark);
-  }
-
-  .hscr-form { display: flex; flex-direction: column; gap: 18px; }
-
-  .hscr-title {
-    font-family: 'Baloo 2', sans-serif;
-    font-size: clamp(1.25rem, 2vw, 1.55rem);
-    font-weight: 700;
-    line-height: 1.25;
-    color: var(--hscr-brand-dark);
-    margin: 0;
-  }
-
-  .hscr-intro {
-    font-size: 14.5px;
-    font-weight: 600;
-    color: var(--hscr-muted);
-    margin: -6px 0 0;
-  }
-
-  .hscr-row { display: flex; gap: 14px; flex-wrap: wrap; }
-  .hscr-row .hscr-field { flex: 1 1 200px; }
-  .hscr-field { display: flex; flex-direction: column; }
-
-  .hscr-field label {
-    font-size: 12.5px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--hscr-ink);
-    margin-bottom: 6px;
-  }
-
-  .hscr-req { color: var(--hscr-error); margin-left: 2px; }
-
-  .hscr-field input[type="text"],
-  .hscr-field input[type="tel"],
-  .hscr-field input[type="email"],
-  .hscr-field select {
-    width: 100%;
-    border: 2px solid var(--hscr-line);
-    background: var(--hscr-surface);
-    color: var(--text-dark);
-    border-radius: 12px;
-    padding: 11px 14px;
-    font-size: 15px;
-    font-weight: 700;
-    line-height: 1.4;
-    font-family: inherit;
-    transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
-  }
-
-  .hscr-field select {
-    appearance: none;
-    -webkit-appearance: none;
-    padding-right: 36px;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M5 7.5l5 5 5-5' stroke='%235a6a5f' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 11px 11px;
-    cursor: pointer;
-  }
-
-  .hscr-field input::placeholder { color: #a8a290; font-weight: 600; }
-
-  .hscr-field input:focus,
-  .hscr-field select:focus {
-    outline: none;
-    border-color: var(--hscr-brand);
-    background-color: var(--hscr-surface-hover);
-    box-shadow: 0 0 0 4px var(--hscr-brand-ring);
-  }
-
-  .hscr-field input.hscr-field--invalid,
-  .hscr-field select.hscr-field--invalid {
-    border-color: var(--hscr-error);
-    background-color: var(--hscr-error-bg);
-  }
-
-  .hscr-field input.hscr-field--invalid:focus,
-  .hscr-field select.hscr-field--invalid:focus {
-    box-shadow: 0 0 0 4px var(--hscr-error-ring);
-  }
-
-  .hscr-phone-group { display: flex; gap: 8px; }
-  .hscr-ddi {
-    display: flex; align-items: center; justify-content: center;
-    border: 2px solid var(--hscr-line); background: var(--hscr-surface);
-    color: var(--hscr-ink); border-radius: 12px; font-weight: 700;
-    padding: 0 12px; font-size: 14px; white-space: nowrap;
-  }
-  .hscr-phone-group input { flex: 1; min-width: 0; }
-
-  .hscr-error {
-    color: var(--hscr-error);
-    font-size: 12.5px;
-    font-weight: 800;
-    margin: 5px 0 0;
-    min-height: 15px;
-  }
-  .hscr-error:empty {
-    margin: 0;
-    min-height: 0;
-  }
-
-  .hscr-consents {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding-top: 2px;
-  }
-
-  .hscr-consents-intro {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--hscr-muted);
-    margin: 8px 0 2px;
-  }
-
-  .hscr-checkbox {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--text-dark);
-    cursor: pointer;
-  }
-
-  .hscr-checkbox input {
-    width: 18px;
-    height: 18px;
-    margin-top: 1px;
-    flex: none;
-    accent-color: var(--hscr-brand);
-  }
-
-  .hscr-checkbox input.hscr-field--invalid {
-    outline: 2px solid var(--hscr-error);
-    outline-offset: 2px;
-  }
-
-  .hscr-progress {
-    width: 100%;
-    height: 5px;
-    border-radius: 999px;
-    background: var(--hscr-line);
-    overflow: hidden;
-  }
-
-  .hscr-progress-fill {
-    height: 100%;
-    width: 50%;
-    border-radius: inherit;
-    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
-    transition: width 250ms ease;
-  }
-
-  .hscr-step { display: flex; flex-direction: column; gap: 18px; }
-  .hscr-step[hidden] { display: none; }
-
-  .hscr-step-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  #hscr-submit, #hscr-next {
-    align-self: flex-start;
-    border: 0;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-deep));
-    color: var(--ink);
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 14px 30px;
-    cursor: pointer;
-    box-shadow: 0 12px 24px -8px rgba(244,180,0,0.55);
-    transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
-  }
-  #hscr-submit:hover:not(:disabled), #hscr-next:hover:not(:disabled) {
-    transform: translateY(-2px);
-    filter: brightness(1.04);
-    box-shadow: 0 16px 28px -8px rgba(244,180,0,0.65);
-  }
-  #hscr-submit:active:not(:disabled), #hscr-next:active:not(:disabled) { transform: translateY(0); }
-  #hscr-submit:focus-visible, #hscr-next:focus-visible { outline: 2px solid var(--hscr-brand); outline-offset: 2px; }
-  #hscr-submit:disabled, #hscr-next:disabled { opacity: .6; cursor: not-allowed; box-shadow: none; }
-
-  #hscr-back {
-    border: 2px solid var(--hscr-line);
-    border-radius: 14px;
-    background: transparent;
-    color: var(--hscr-ink);
-    font-family: 'Baloo 2', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 14px 22px;
-    cursor: pointer;
-    transition: border-color 150ms ease, background-color 150ms ease;
-  }
-  #hscr-back:hover { border-color: var(--hscr-brand); background: #FBF8ED; }
-  #hscr-back:focus-visible { outline: 2px solid var(--hscr-brand); outline-offset: 2px; }
-
-  .hscr-submit-error { color: var(--hscr-error); display: none; margin: 0; font-size: 13px; font-weight: 700; }
-  .hscr-submit-error.show { display: block; }
-
-  .hscr-success {
-    display: none;
-    text-align: center;
-    padding: 28px 6px 10px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    color: var(--hscr-ink);
-    font-size: 15px;
-  }
-
-  /* ---------------------------------- */
-  /* RESPONSIVE                          */
-  /* ---------------------------------- */
-
-  @media (max-width: 900px){
-    .cr-wrap{ grid-template-columns:1fr; }
-    .cr-copy{ order:1; }
-    .cr-card{ order:2; }
-    .cr-ring{ width:700px; height:700px; right:-260px; top:-200px; }
-    .cr-tri{ width:60vw; }
-  }
-
-  @media (max-width: 520px){
-    .hscr-row{ flex-direction:column; }
-    .hscr-row .hscr-field{ flex:1 1 auto; }
-    .cr-pillars{ gap:8px; }
-    .cr-pillar{ font-size:13px; padding:9px 13px 9px 10px; }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .cr-eyebrow, .cr-h1, .cr-sub, .cr-pillars, .cr-card{
-      animation:none !important; opacity:1 !important; transform:none !important;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #111b21;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
-    .cr-eyebrow::before{ animation:none !important; }
-  }
-</style>
+
+    /* ===== CONTAINER ===== */
+    .wa-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #0b141a;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===== HEADER ===== */
+    .wa-header {
+      background: #1b5e38;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      border-bottom: 1px solid #145030;
+    }
+    .wa-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .wa-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .wa-contact { flex: 1; }
+    .wa-name   { color: #e9edef; font-size: 16px; font-weight: 600; }
+    .wa-status { color: rgba(255,255,255,0.75); font-size: 12px; }
+
+    /* ===== CHAT AREA ===== */
+    .wa-chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px 80px;
+      background-color: #efeae2;
+      background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png");
+      background-repeat: repeat;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .wa-chat::-webkit-scrollbar { width: 6px; }
+    .wa-chat::-webkit-scrollbar-track { background: transparent; }
+    .wa-chat::-webkit-scrollbar-thumb { background: #b2b2b2; border-radius: 3px; }
+
+    /* ===== MESSAGES ===== */
+    .msg {
+      max-width: 75%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.45;
+      position: relative;
+      animation: fadeIn 0.3s ease;
+      word-wrap: break-word;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(6px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .msg.bot  { background:#fff; color:#3b4a54; align-self:flex-start; border-top-left-radius:0; }
+    .msg.user { background:#1b5e38; color:#e9edef; align-self:flex-end; border-top-right-radius:0; }
+    .msg .time { font-size:11px; text-align:right; margin-top:4px; color:#8696a0; }
+    .msg.user .time { color:rgba(255,255,255,0.55); }
+
+    /* ===== TYPING ===== */
+    .typing {
+      display:flex; gap:4px; padding:12px 14px;
+      align-self:flex-start; background:#fff;
+      border-radius:8px; border-top-left-radius:0;
+      animation: fadeIn 0.2s ease;
+    }
+    .typing span {
+      width:8px; height:8px; background:#8696a0;
+      border-radius:50%; animation: bounce 1.4s infinite;
+    }
+    .typing span:nth-child(2){ animation-delay:.2s; }
+    .typing span:nth-child(3){ animation-delay:.4s; }
+    @keyframes bounce {
+      0%,60%,100%{ transform:translateY(0); }
+      30%{ transform:translateY(-6px); }
+    }
+
+    /* ===== OPTIONS ===== */
+    .options {
+      display:flex; flex-direction:column; gap:6px;
+      margin-top:6px; align-self:flex-start;
+      width: min(85%, 340px);
+      animation: fadeIn .3s ease;
+    }
+    .opt-btn {
+      background:#fff; border:1.5px solid #1b5e38; color:#1b5e38;
+      padding:9px 16px; border-radius:20px; font-size:13.5px;
+      cursor:pointer; text-align:left;
+      transition:background .18s, color .18s; font-family:inherit;
+    }
+    .opt-btn:hover { background:#1b5e38; color:#fff; }
+
+    /* ===== DATE SEPARATOR ===== */
+    .date-sep { text-align:center; margin:8px 0; align-self:center; }
+    .date-sep span {
+      background:rgba(255,255,255,0.9); color:#555;
+      font-size:12px; padding:4px 12px; border-radius:6px;
+    }
+
+    /* ===== INPUT AREA ===== */
+    .input-area {
+      display:flex; gap:8px; padding:8px 12px;
+      background:#f0f2f5; border-top:1px solid #e0e0e0;
+      position:fixed; bottom:0; left:0; right:0;
+      z-index:999;
+      animation: fadeIn .3s ease;
+    }
+    .input-area input {
+      flex:1; background:#fff; border:1px solid #ddd;
+      border-radius:22px; padding:10px 16px; color:#3b4a54;
+      font-size:14px; font-family:inherit; outline:none;
+      transition:border-color .18s;
+    }
+    .input-area input:focus { border-color:#1b5e38; }
+    .input-area input::placeholder { color:#aaa; }
+    .send-btn {
+      background:#1b5e38; border:none; border-radius:50%;
+      width:42px; height:42px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:background .18s;
+    }
+    .send-btn:hover { background:#145030; }
+    .send-btn svg { width:20px; height:20px; }
+
+    /* ===== LOADING OVERLAY ===== */
+    .loading-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,0.45);
+      display:flex; align-items:center; justify-content:center; z-index:9999;
+    }
+    .spinner {
+      width:42px; height:42px; border:3px solid rgba(255,255,255,0.3);
+      border-top-color:#fff; border-radius:50%;
+      animation:spin .8s linear infinite;
+    }
+    @keyframes spin { to{ transform:rotate(360deg); } }
+    .hidden { display:none !important; }
+
+    @media(max-width:480px){
+      .wa-container { max-height:none; height:100dvh; }
+      .msg { max-width:88%; }
+    }
+  </style>
 </head>
 <body>
 
-<section class="cr-hero">
-  <div class="cr-ring" aria-hidden="true"></div>
-  <div class="cr-tri" aria-hidden="true"><i class="t1"></i><i class="t2"></i><i class="t3"></i></div>
-
-  <div class="cr-topbar">
-    <a href="#" class="cr-logo" aria-label="CentroRochas">
-      <img src="https://cdn.prod.website-files.com/64ee410e3b1bad3b81f3a7bc/67b398129cf6f3d8e11a8b52_centrorochas-pt.svg" alt="CentroRochas">
-    </a>
-  </div>
-
-  <div class="cr-wrap">
-    <div class="cr-copy">
-      <span class="cr-eyebrow">Associação do setor de rochas ornamentais</span>
-      <h1 class="cr-h1">Quando o setor cresce, <em>sua empresa cresce junto.</em></h1>
-      <p class="cr-sub">Faça parte da CentroRochas e ganhe representatividade perante governo e imprensa, especificação junto a arquitetos e designers, e inteligência de mercado para o seu negócio.</p>
-      <div class="cr-pillars">
-        <div class="cr-pillar"><span class="ic"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15l2-7 4-3 6 1 4 5-2 7-6 2z"/></svg></span> Representatividade</div>
-        <div class="cr-pillar"><span class="ic"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 14l5-5 3 3 4-4 4 4"/></svg></span> Especificação</div>
-        <div class="cr-pillar"><span class="ic"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18l5-9 3 4 3-6 7 11z"/></svg></span> Mercado</div>
-      </div>
+<div class="wa-container">
+  <!-- Header -->
+  <div class="wa-header">
+    <div class="wa-avatar">
+      <img src="https://cdn.prod.website-files.com/64ee410e3b1bad3b81f3a7bc/67b39ab38bb32132b219b2b6_webclip.png" alt="Centrorochas">
     </div>
-
-    <div class="cr-card" id="crCard">
-      <!--
-        Formulário Centrorochas — HubSpot form 1fc9cc84-8738-4af6-b0a6-8a808765d873 (portal 47817260).
-        Envia direto para a Forms Submissions API do HubSpot — mesmo padrão dos outros embeds deste
-        projeto, com prefixo de classes/IDs "hscr-" para não colidir com os demais.
-
-        Este formulário tem 2 etapas nativas no HubSpot: Etapa 1 cria/atualiza um Contato, Etapa 2
-        cria/atualiza uma Empresa associada (CNPJ, segmento etc.) — o Forms Submissions API cuida da
-        associação Contato↔Empresa automaticamente com base na configuração do formulário no HubSpot,
-        então basta enviar todos os campos (contato + empresa) juntos no mesmo array "fields".
-
-        Nomes internos confirmados em HubSpot > Conteúdos do formulário > editar campo:
-          Contato: firstname, lastname, email, phone
-          Empresa: name (Nome da empresa), cnpj, tg_segmento_da_sua_empresa,
-                   tg_o_que_faria_sua_empresa_decidir_se_associar_hoje
-
-        TODO antes de publicar:
-        1) O segundo checkbox de consentimento ("armazenar e processar dados pessoais") cortou no print
-           antes de mostrar o texto do próprio checkbox. Usei o mesmo texto padrão do formulário da V1
-           Prime ("Eu concordo em permitir que a Centrorochas armazene e processe meus dados pessoais.")
-           — confirme o texto exato e se é obrigatório.
-        2) O checkbox de comunicações de marketing está sendo enviado como propriedade de contato simples
-           (marketingConsent = "Sim"/"Não"), não como consentimento formal de assinatura do HubSpot —
-           mesma ressalva já feita no embed-v1.html. Confirme se a propriedade
-           "aceite_comunicacoes_marketing" existe no portal, ou me passe o Subscription type ID.
-        3) Não vi campos ocultos de UTM neste formulário nos prints — se existirem, me avise que eu
-           adiciono a captura, igual fiz no embed-v1.html.
-      -->
-      <div class="hscr-wrap">
-        <form class="hscr-form" id="hscr-form" novalidate>
-          <div class="hscr-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-label="Progresso do formulário">
-            <div class="hscr-progress-fill" id="hscr-progress-fill"></div>
-          </div>
-
-          <div class="hscr-step" id="hscr-step-1">
-            <h2 class="hscr-title">Faça parte da Centrorochas: o ecossistema que move o setor de rochas no Brasil</h2>
-            <p class="hscr-intro">Preencha os dados abaixo para darmos início ao seu processo de associação e ter acesso a benefícios exclusivos:</p>
-
-            <div class="hscr-row">
-              <div class="hscr-field">
-                <label for="hscr-firstname">Nome:<span class="hscr-req">*</span></label>
-                <input type="text" id="hscr-firstname" name="firstname" autocomplete="given-name" required aria-describedby="hscr-firstname-error">
-                <p class="hscr-error" id="hscr-firstname-error"></p>
-              </div>
-              <div class="hscr-field">
-                <label for="hscr-lastname">Sobrenome:<span class="hscr-req">*</span></label>
-                <input type="text" id="hscr-lastname" name="lastname" autocomplete="family-name" required aria-describedby="hscr-lastname-error">
-                <p class="hscr-error" id="hscr-lastname-error"></p>
-              </div>
-            </div>
-
-            <div class="hscr-field">
-              <label for="hscr-email">E-mail corporativo:<span class="hscr-req">*</span></label>
-              <input type="email" id="hscr-email" name="email" autocomplete="email" required aria-describedby="hscr-email-error">
-              <p class="hscr-error" id="hscr-email-error"></p>
-            </div>
-
-            <div class="hscr-field">
-              <label for="hscr-phone">Telefone:<span class="hscr-req">*</span></label>
-              <div class="hscr-phone-group">
-                <span class="hscr-ddi">BR&nbsp;+55</span>
-                <input type="tel" id="hscr-phone" name="phone" inputmode="numeric" autocomplete="tel" required aria-describedby="hscr-phone-error">
-              </div>
-              <p class="hscr-error" id="hscr-phone-error"></p>
-            </div>
-
-            <div class="hscr-consents">
-              <p class="hscr-consents-intro">Ao marcar as caixas abaixo, você concorda em receber comunicações da Centrorochas. Você pode cancelar a inscrição a qualquer momento.</p>
-              <label class="hscr-checkbox">
-                <input type="checkbox" id="hscr-consent-marketing" required aria-describedby="hscr-consent-marketing-error">
-                <span>Eu concordo em receber outras comunicações da Centrorochas.<span class="hscr-req">*</span></span>
-              </label>
-              <p class="hscr-error" id="hscr-consent-marketing-error"></p>
-
-              <p class="hscr-consents-intro">Para podermos prestar o nosso serviço, precisamos da sua autorização para armazenar e processar os seus dados pessoais.</p>
-              <label class="hscr-checkbox">
-                <input type="checkbox" id="hscr-consent-process" required aria-describedby="hscr-consent-process-error">
-                <span>Eu concordo em permitir que a Centrorochas armazene e processe meus dados pessoais.<span class="hscr-req">*</span></span>
-              </label>
-              <p class="hscr-error" id="hscr-consent-process-error"></p>
-            </div>
-
-            <button type="button" id="hscr-next" class="hscr-next">Próximo</button>
-          </div>
-
-          <div class="hscr-step" id="hscr-step-2" hidden>
-            <h2 class="hscr-title">Conte-nos um pouco sobre a sua empresa</h2>
-            <p class="hscr-intro">Essas informações nos ajudam a entender o seu negócio e a personalizar totalmente o nosso atendimento.</p>
-
-            <div class="hscr-field">
-              <label for="hscr-company-name">Nome da empresa:<span class="hscr-req">*</span></label>
-              <input type="text" id="hscr-company-name" name="company_name" required aria-describedby="hscr-company-name-error">
-              <p class="hscr-error" id="hscr-company-name-error"></p>
-            </div>
-
-            <div class="hscr-field">
-              <label for="hscr-cnpj">CNPJ:<span class="hscr-req">*</span></label>
-              <input type="text" id="hscr-cnpj" name="cnpj" inputmode="numeric" required aria-describedby="hscr-cnpj-error">
-              <p class="hscr-error" id="hscr-cnpj-error"></p>
-            </div>
-
-            <div class="hscr-field">
-              <label for="hscr-segmento">Qual o seu segmento?<span class="hscr-req">*</span></label>
-              <select id="hscr-segmento" name="segmento" required aria-describedby="hscr-segmento-error">
-                <option value="">Selecione...</option>
-                <option value="Extração">Extração</option>
-                <option value="Beneficiamento">Beneficiamento</option>
-                <option value="Comercialização">Comercialização</option>
-                <option value="Extração e Beneficiamento">Extração e Beneficiamento</option>
-                <option value="Beneficiamento e Comercial">Beneficiamento e Comercial</option>
-                <option value="Beneficiamento, Comercial e Extração">Beneficiamento, Comercial e Extração</option>
-                <option value="Outros">Outros</option>
-              </select>
-              <p class="hscr-error" id="hscr-segmento-error"></p>
-            </div>
-
-            <div class="hscr-field">
-              <label for="hscr-decisao">O que faria sua empresa decidir se associar hoje?<span class="hscr-req">*</span></label>
-              <select id="hscr-decisao" name="decisao_associar" required aria-describedby="hscr-decisao-error">
-                <option value="">Selecione...</option>
-                <option value="Capacitação">Capacitação</option>
-                <option value="Networking">Networking</option>
-                <option value="Redução de Custos">Redução de Custos</option>
-                <option value="Exportação">Exportação</option>
-              </select>
-              <p class="hscr-error" id="hscr-decisao-error"></p>
-            </div>
-
-            <div class="hscr-step-actions">
-              <button type="button" id="hscr-back" class="hscr-back">Anterior</button>
-              <button type="submit" id="hscr-submit">Enviar solicitação</button>
-            </div>
-            <p class="hscr-submit-error" id="hscr-submit-error">Não foi possível enviar seu formulário. Tente novamente.</p>
-          </div>
-        </form>
-
-        <div class="hscr-success" id="hscr-success">
-          <p>Recebemos sua solicitação! Em breve entraremos em contato.</p>
-        </div>
-      </div>
+    <div class="wa-contact">
+      <div class="wa-name">Centrorochas</div>
+      <div class="wa-status" id="statusEl">online</div>
     </div>
   </div>
-</section>
+
+  <!-- Chat -->
+  <div class="wa-chat" id="chat"></div>
+</div>
+
+<!-- Loading -->
+<div class="loading-overlay hidden" id="loadingOverlay">
+  <div class="spinner"></div>
+</div>
 
 <script>
-(function () {
-  var HUBSPOT = {
-    portalId: '47817260',
-    formId: '1fc9cc84-8738-4af6-b0a6-8a808765d873',
-    endpoint: 'https://api.hsforms.com/submissions/v3/integration/submit'
+(function(){
+  // ========== CONFIG ==========
+  const PORTAL_ID = "47817260";
+  const FORM_ID   = "1fc9cc84-8738-4af6-b0a6-8a808765d873";
+
+  const chat      = document.getElementById("chat");
+  const statusEl  = document.getElementById("statusEl");
+  const loading   = document.getElementById("loadingOverlay");
+  const collected = {};
+
+  // ========== UTILS ==========
+  const getTime = () => {
+    const n = new Date();
+    return String(n.getHours()).padStart(2,"0") + ":" + String(n.getMinutes()).padStart(2,"0");
   };
+  const scrollBot = () => requestAnimationFrame(() => { chat.scrollTop = chat.scrollHeight; });
+  const delay     = ms => new Promise(r => setTimeout(r, ms));
 
-  var FIELD_NAMES = {
-    companyName: 'name',
-    cnpj: 'cnpj',
-    segmento: 'tg_segmento_da_sua_empresa',
-    decisao: 'tg_o_que_faria_sua_empresa_decidir_se_associar_hoje',
-    marketingConsent: 'aceite_comunicacoes_marketing'
-  };
-
-  var form = document.getElementById('hscr-form');
-  if (!form) return;
-
-  var success = document.getElementById('hscr-success');
-  var submitBtn = document.getElementById('hscr-submit');
-  var submitError = document.getElementById('hscr-submit-error');
-
-  var firstname = form.querySelector('#hscr-firstname');
-  var lastname = form.querySelector('#hscr-lastname');
-  var email = form.querySelector('#hscr-email');
-  var phone = form.querySelector('#hscr-phone');
-  var consentMarketing = form.querySelector('#hscr-consent-marketing');
-  var consentProcess = form.querySelector('#hscr-consent-process');
-  var companyName = form.querySelector('#hscr-company-name');
-  var cnpj = form.querySelector('#hscr-cnpj');
-  var segmento = form.querySelector('#hscr-segmento');
-  var decisao = form.querySelector('#hscr-decisao');
-
-  var step1 = document.getElementById('hscr-step-1');
-  var step2 = document.getElementById('hscr-step-2');
-  var nextBtn = document.getElementById('hscr-next');
-  var backBtn = document.getElementById('hscr-back');
-  var progressFill = document.getElementById('hscr-progress-fill');
-  var progressBar = form.querySelector('.hscr-progress');
-
-  function setProgress(percent) {
-    progressFill.style.width = percent + '%';
-    progressBar.setAttribute('aria-valuenow', String(percent));
-  }
-
-  function digitsOnly(value) {
-    return value.replace(/\D/g, '');
-  }
-
-  function maskPhone(value) {
-    var digits = digitsOnly(value).slice(0, 11);
-    if (!digits.length) return '';
-    if (digits.length <= 2) return '(' + digits;
-    if (digits.length <= 6) return '(' + digits.slice(0, 2) + ') ' + digits.slice(2);
-    if (digits.length <= 10) return '(' + digits.slice(0, 2) + ') ' + digits.slice(2, 6) + '-' + digits.slice(6);
-    return '(' + digits.slice(0, 2) + ') ' + digits.slice(2, 7) + '-' + digits.slice(7);
-  }
-
-  function maskCnpj(value) {
-    var d = digitsOnly(value).slice(0, 14);
-    if (d.length <= 2) return d;
-    if (d.length <= 5) return d.replace(/(\d{2})(\d+)/, '$1.$2');
-    if (d.length <= 8) return d.replace(/(\d{2})(\d{3})(\d+)/, '$1.$2.$3');
-    if (d.length <= 12) return d.replace(/(\d{2})(\d{3})(\d{3})(\d+)/, '$1.$2.$3/$4');
-    return d.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d+)/, '$1.$2.$3/$4-$5');
-  }
-
-  function requiredText(el, label) {
-    var value = el.value.trim();
-    if (!value) return 'Informe ' + label + '.';
-    return '';
-  }
-
-  function validateFirstname() { return requiredText(firstname, 'seu nome'); }
-  function validateLastname() { return requiredText(lastname, 'seu sobrenome'); }
-  function validateCompanyName() { return requiredText(companyName, 'o nome da empresa'); }
-
-  function validateEmail() {
-    var value = email.value.trim();
-    if (!value) return 'Informe seu e-mail.';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) return 'Informe um e-mail válido.';
-    return '';
-  }
-
-  function validatePhone() {
-    var digits = digitsOnly(phone.value);
-    if (!digits.length) return 'Informe seu telefone.';
-    if (digits.length < 10 || digits.length > 11) return 'Informe um telefone válido com DDD.';
-    if (digits.length === 11 && digits.charAt(2) !== '9') return 'Celular deve começar com 9 após o DDD.';
-    return '';
-  }
-
-  function validateCnpj() {
-    if (digitsOnly(cnpj.value).length !== 14) return 'Informe um CNPJ válido.';
-    return '';
-  }
-
-  function validateSelect(el) {
-    if (!el.value) return 'Selecione uma opção.';
-    return '';
-  }
-
-  function validateCheckbox(el) {
-    if (!el.checked) return 'É necessário marcar esta caixa para continuar.';
-    return '';
-  }
-
-  var fieldList = [
-    { el: firstname, errorId: 'hscr-firstname-error', validate: validateFirstname, step: 1 },
-    { el: lastname, errorId: 'hscr-lastname-error', validate: validateLastname, step: 1 },
-    { el: email, errorId: 'hscr-email-error', validate: validateEmail, step: 1 },
-    { el: phone, errorId: 'hscr-phone-error', validate: validatePhone, step: 1 },
-    { el: consentMarketing, errorId: 'hscr-consent-marketing-error', validate: function () { return validateCheckbox(consentMarketing); }, step: 1 },
-    { el: consentProcess, errorId: 'hscr-consent-process-error', validate: function () { return validateCheckbox(consentProcess); }, step: 1 },
-    { el: companyName, errorId: 'hscr-company-name-error', validate: validateCompanyName, step: 2 },
-    { el: cnpj, errorId: 'hscr-cnpj-error', validate: validateCnpj, step: 2 },
-    { el: segmento, errorId: 'hscr-segmento-error', validate: function () { return validateSelect(segmento); }, step: 2 },
-    { el: decisao, errorId: 'hscr-decisao-error', validate: function () { return validateSelect(decisao); }, step: 2 }
+  // ========== GREETING VALIDATOR ==========
+  const CUMPRIMENTOS = [
+    "olá","ola","oi","oii","hi","hello","hey","e aí","eai","bom dia","boa tarde",
+    "boa noite","tudo bem","tudo bom","tudo","boa","alô","alo","salve","opa","yo"
   ];
-
-  function fieldsForStep(step) {
-    return fieldList.filter(function (field) { return field.step === step; });
+  function pareceNome(txt) {
+    const n = txt.trim().toLowerCase().replace(/[!?.]/g,"");
+    if (CUMPRIMENTOS.includes(n)) return false;
+    if (n.replace(/\s/g,"").length < 2) return false;
+    if (!/[a-záéíóúâêîôûãõàèìòùäëïöüç]/i.test(n)) return false;
+    if (/^\d+$/.test(n)) return false;
+    return true;
   }
 
-  function validateFields(list) {
-    var isValid = true;
-    list.forEach(function (field) {
-      if (!validateField(field)) isValid = false;
+  // ========== RENDERING ==========
+  function addDateSep() {
+    const div = document.createElement("div");
+    div.className = "date-sep";
+    const f = new Date().toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});
+    div.innerHTML = `<span>HOJE, ${f}</span>`;
+    chat.appendChild(div); scrollBot();
+  }
+
+  function addBot(html) {
+    return new Promise(async res => {
+      const t = document.createElement("div");
+      t.className = "typing";
+      t.innerHTML = "<span></span><span></span><span></span>";
+      chat.appendChild(t); scrollBot();
+      await delay(800 + Math.random()*600);
+      t.remove();
+      const m = document.createElement("div");
+      m.className = "msg bot";
+      m.innerHTML = `${html}<div class="time">${getTime()}</div>`;
+      chat.appendChild(m); scrollBot(); res();
     });
-    return isValid;
   }
 
-  function focusFirstInvalid(container) {
-    var firstInvalid = container.querySelector('.hscr-field--invalid');
-    if (firstInvalid && firstInvalid.focus) firstInvalid.focus();
+  function addUser(txt) {
+    const m = document.createElement("div");
+    m.className = "msg user";
+    m.innerHTML = `${txt}<div class="time">${getTime()}</div>`;
+    chat.appendChild(m); scrollBot();
   }
 
-  function setFieldState(el, errorId, message) {
-    var errorEl = document.getElementById(errorId);
-    var isValid = !message;
-    el.classList.toggle('hscr-field--invalid', !isValid);
-    el.setAttribute('aria-invalid', isValid ? 'false' : 'true');
-    if (errorEl) errorEl.textContent = message || '';
-  }
-
-  function validateField(field) {
-    var message = field.validate();
-    setFieldState(field.el, field.errorId, message);
-    return !message;
-  }
-
-  phone.addEventListener('input', function () {
-    var cursorFromEnd = phone.value.length - phone.selectionStart;
-    phone.value = maskPhone(phone.value);
-    var nextPos = Math.max(phone.value.length - cursorFromEnd, 0);
-    phone.setSelectionRange(nextPos, nextPos);
-  });
-
-  cnpj.addEventListener('input', function () {
-    var cursorFromEnd = cnpj.value.length - cnpj.selectionStart;
-    cnpj.value = maskCnpj(cnpj.value);
-    var nextPos = Math.max(cnpj.value.length - cursorFromEnd, 0);
-    cnpj.setSelectionRange(nextPos, nextPos);
-  });
-
-  fieldList.forEach(function (field) {
-    var eventName = field.el.tagName === 'SELECT' || field.el.type === 'checkbox' ? 'change' : 'input';
-    field.el.addEventListener('blur', function () { validateField(field); });
-    field.el.addEventListener(eventName, function () {
-      if (field.el.classList.contains('hscr-field--invalid')) validateField(field);
+  // ===== SINGLE SELECT =====
+  function showOptions(opts, cb) {
+    const wrap = document.createElement("div");
+    wrap.className = "options";
+    opts.forEach(o => {
+      const btn = document.createElement("button");
+      btn.className = "opt-btn";
+      btn.textContent = o.label;
+      btn.addEventListener("click", () => { wrap.remove(); addUser(o.label); cb(o.value); });
+      wrap.appendChild(btn);
     });
-  });
-
-  nextBtn.addEventListener('click', function () {
-    if (!validateFields(fieldsForStep(1))) {
-      focusFirstInvalid(step1);
-      return;
-    }
-    step1.hidden = true;
-    step2.hidden = false;
-    setProgress(100);
-    step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  backBtn.addEventListener('click', function () {
-    step2.hidden = true;
-    step1.hidden = false;
-    setProgress(50);
-    step1.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
-  function getHubspotUtk() {
-    var match = document.cookie.match(/(?:^|;\s*)hubspotutk=([^;]+)/);
-    return match ? match[1] : '';
+    chat.appendChild(wrap); scrollBot();
   }
 
-  function buildHubspotFields(lead) {
-    return [
-      { name: 'firstname', value: lead.firstname },
-      { name: 'lastname', value: lead.lastname },
-      { name: 'email', value: lead.email },
-      { name: 'phone', value: lead.phone },
-      { name: FIELD_NAMES.marketingConsent, value: lead.marketingConsent ? 'Sim' : 'Não' },
-      { name: FIELD_NAMES.companyName, value: lead.companyName },
-      { name: FIELD_NAMES.cnpj, value: lead.cnpj },
-      { name: FIELD_NAMES.segmento, value: lead.segmento },
-      { name: FIELD_NAMES.decisao, value: lead.decisao }
-    ];
+  // ========== INPUT BUILDERS ==========
+  function buildInput(type, placeholder, submitFn) {
+    const area = document.createElement("div");
+    area.className = "input-area";
+    const inp = document.createElement("input");
+    inp.type = type; inp.placeholder = placeholder;
+    const btn = document.createElement("button");
+    btn.className = "send-btn";
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>`;
+    btn.addEventListener("click", submitFn);
+    inp.addEventListener("keydown", e => { if(e.key==="Enter") submitFn(); });
+    area.appendChild(inp); area.appendChild(btn);
+    return { area, inp };
   }
 
-  function submitToHubspot(lead) {
-    var hutk = getHubspotUtk();
-    var context = { pageUri: window.location.href, pageName: document.title };
-    if (hutk) context.hutk = hutk;
+  function showInput(area) {
+    document.body.appendChild(area);
+    chat.style.paddingBottom = "80px";
+    scrollBot();
+  }
+  function removeInput(area) {
+    area.remove();
+    chat.style.paddingBottom = "80px";
+  }
 
-    return fetch(HUBSPOT.endpoint + '/' + HUBSPOT.portalId + '/' + HUBSPOT.formId, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        submittedAt: Date.now(),
-        fields: buildHubspotFields(lead),
-        context: context,
-        legalConsentOptions: {
-          consent: {
-            consentToProcess: true,
-            text: 'Eu concordo em permitir que a Centrorochas armazene e processe meus dados pessoais.'
-          }
-        }
-      })
-    }).then(function (response) {
-      if (!response.ok) {
-        return response.json().catch(function () { return {}; }).then(function (error) {
-          throw new Error(error.message || 'Erro ao enviar formulário');
-        });
+  // Nome com validação de cumprimentos
+  function askNome(isFirst, cb) {
+    const { area, inp } = buildInput("text", "Digite aqui...", submit);
+    function submit() {
+      const v = inp.value.trim(); if (!v) return;
+      removeInput(area); addUser(v);
+      if (isFirst && !pareceNome(v)) {
+        (async()=>{
+          await addBot("Parece que você digitou um cumprimento 😅 Por favor, me diga seu <b>nome</b>.");
+          askNome(true, cb);
+        })(); return;
       }
-      return response.json();
+      cb(v);
+    }
+    showInput(area); inp.focus();
+  }
+
+  // E-mail
+  function askEmail(cb) {
+    const { area, inp } = buildInput("email", "seu@email.com", submit);
+    function submit() {
+      const v = inp.value.trim(); if (!v) return;
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+        inp.style.borderColor="#e74c3c"; inp.placeholder="E-mail inválido, tente novamente"; inp.value=""; return;
+      }
+      removeInput(area); addUser(v); cb(v);
+    }
+    showInput(area); inp.focus();
+  }
+
+  // Telefone com máscara BR
+  function askPhone(cb) {
+    const { area, inp } = buildInput("tel", "(00) 00000-0000", submit);
+    inp.addEventListener("input", () => {
+      let v = inp.value.replace(/\D/g,"");
+      if (v.length > 11) v = v.slice(0,11);
+      if (v.length > 6)      inp.value = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+      else if (v.length > 2) inp.value = `(${v.slice(0,2)}) ${v.slice(2)}`;
+      else if (v.length > 0) inp.value = `(${v}`;
+    });
+    function submit() {
+      const raw = inp.value.replace(/\D/g,"");
+      if (raw.length < 10) { inp.style.borderColor="#e74c3c"; inp.placeholder="Número inválido"; inp.value=""; return; }
+      removeInput(area); addUser(inp.value.trim()); cb("+55"+raw);
+    }
+    showInput(area); inp.focus();
+  }
+
+  // Texto genérico
+  function askText(placeholder, cb) {
+    const { area, inp } = buildInput("text", placeholder, submit);
+    function submit() {
+      const v = inp.value.trim(); if (!v) return;
+      removeInput(area); addUser(v); cb(v);
+    }
+    showInput(area); inp.focus();
+  }
+
+  // CNPJ com máscara
+  function askCnpj(cb) {
+    const { area, inp } = buildInput("text", "00.000.000/0000-00", submit);
+    inp.maxLength = 18;
+    inp.addEventListener("input", () => {
+      let v = inp.value.replace(/\D/g,"");
+      if (v.length > 14) v = v.slice(0,14);
+      if (v.length > 12)      inp.value = `${v.slice(0,2)}.${v.slice(2,5)}.${v.slice(5,8)}/${v.slice(8,12)}-${v.slice(12)}`;
+      else if (v.length > 8)  inp.value = `${v.slice(0,2)}.${v.slice(2,5)}.${v.slice(5,8)}/${v.slice(8)}`;
+      else if (v.length > 5)  inp.value = `${v.slice(0,2)}.${v.slice(2,5)}.${v.slice(5)}`;
+      else if (v.length > 2)  inp.value = `${v.slice(0,2)}.${v.slice(2)}`;
+      else                    inp.value = v;
+    });
+    function submit() {
+      const raw = inp.value.replace(/\D/g,"");
+      if (raw.length < 14) { inp.style.borderColor="#e74c3c"; inp.placeholder="CNPJ inválido (14 dígitos)"; inp.value=""; return; }
+      removeInput(area); addUser(inp.value.trim()); cb(inp.value.trim());
+    }
+    showInput(area); inp.focus();
+  }
+
+  // ========== HUBSPOT ==========
+  function getCookie(name) {
+    const m = document.cookie.split("; ").find(r=>r.startsWith(name+"="));
+    return m ? m.split("=")[1] : null;
+  }
+
+  async function submitHubSpot(fields) {
+    const ctx = { pageUri: window.location.href, pageName: document.title };
+    const hutk = getCookie("hubspotutk");
+    if (hutk) ctx.hutk = hutk;
+    const res = await fetch(
+      `https://api.hsforms.com/submissions/v3/integration/submit/${PORTAL_ID}/${FORM_ID}`,
+      { method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+        body: JSON.stringify({ fields: fields.filter(f=>f.value!==""), skipValidation:true, context:ctx }) }
+    );
+    const txt = await res.text();
+    if (!res.ok) { let e; try{ e=JSON.parse(txt); }catch(_){ e={message:txt}; } throw new Error(e.message||`Erro ${res.status}`); }
+    return JSON.parse(txt);
+  }
+
+  function setLoading(on) {
+    loading.classList.toggle("hidden", !on);
+    statusEl.textContent = on ? "enviando..." : "online";
+  }
+
+  // ========== FLOW ==========
+  async function start() {
+    addDateSep();
+    await addBot("Olá! Seja bem-vindo(a) à <b>Centrorochas</b> 🪨");
+    await delay(300);
+    await addBot("Somos o ecossistema que <b>move o setor de rochas naturais no Brasil</b>. Preencha os dados abaixo para darmos início ao seu processo de associação e ter acesso a <b>benefícios exclusivos</b>!");
+    await delay(300);
+    await addBot("<b>1.</b> Qual é o seu <b>nome</b>?");
+    askNome(true, async nome => {
+      collected.firstname = nome;
+      await addBot("<b>2.</b> E o seu <b>sobrenome</b>?");
+      askNome(false, async sobrenome => {
+        collected.lastname = sobrenome;
+        await addBot("<b>3.</b> Qual é o seu <b>e-mail corporativo</b>?");
+        askEmail(async email => {
+          collected.email = email;
+          await addBot("<b>4.</b> Qual é o seu <b>telefone</b> para contato? (com DDD)");
+          askPhone(async phone => {
+            collected.phone = phone;
+            await askEmpresa();
+          });
+        });
+      });
     });
   }
 
-  form.addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    if (!validateFields(fieldsForStep(2))) {
-      focusFirstInvalid(step2);
-      return;
-    }
-
-    submitError.classList.remove('show');
-
-    var lead = {
-      firstname: firstname.value.trim(),
-      lastname: lastname.value.trim(),
-      email: email.value.trim(),
-      phone: '+55' + digitsOnly(phone.value),
-      marketingConsent: consentMarketing.checked,
-      companyName: companyName.value.trim(),
-      cnpj: digitsOnly(cnpj.value),
-      segmento: segmento.value,
-      decisao: decisao.value
-    };
-
-    var originalLabel = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Enviando...';
-
-    submitToHubspot(lead).then(function () {
-      if (typeof fbq === 'function') fbq('track', 'Lead');
-      form.style.display = 'none';
-      success.style.display = 'block';
-    }).catch(function (err) {
-      console.error('HubSpot submit error:', err);
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalLabel;
-      submitError.classList.add('show');
+  async function askEmpresa() {
+    await addBot("Ótimo! Agora me conte um pouco sobre a sua empresa 🏢");
+    await delay(300);
+    await addBot("<b>5.</b> Qual é o <b>nome da sua empresa</b>?");
+    askText("Nome da empresa...", async empresa => {
+      collected.company = empresa;
+      await addBot("<b>6.</b> Qual é o <b>CNPJ</b> da sua empresa?");
+      askCnpj(async cnpj => {
+        collected.cnpj = cnpj;
+        await askSegmento();
+      });
     });
-  });
+  }
+
+  async function askSegmento() {
+    await addBot("<b>7.</b> Qual é o <b>segmento</b> da sua empresa?");
+    showOptions([
+      { label: "⛏️ Extração",                                    value: "Extração" },
+      { label: "🏭 Beneficiamento",                              value: "Beneficiamento" },
+      { label: "📦 Comercialização",                             value: "Comercialização" },
+      { label: "⛏️🏭 Extração e Beneficiamento",                 value: "Extração e Beneficiamento" },
+      { label: "🏭📦 Beneficiamento e Comercial",                value: "Beneficiamento e Comercial" },
+      { label: "🏭📦⛏️ Beneficiamento, Comercial e Extração",    value: "Beneficiamento, Comercial e Extração" },
+      { label: "🔧 Outros",                                      value: "Outros" }
+    ], async seg => {
+      collected.segmento = seg;
+      await askDecisao();
+    });
+  }
+
+  async function askDecisao() {
+    await addBot("<b>8.</b> O que faria sua empresa <b>decidir se associar hoje</b>?");
+    showOptions([
+      { label: "🎓 Capacitação",       value: "Capacitação" },
+      { label: "🤝 Networking",        value: "Networking" },
+      { label: "💰 Redução de Custos", value: "Redução de Custos" },
+      { label: "🌎 Exportação",        value: "Exportação" }
+    ], async decisao => {
+      collected.decisao = decisao;
+      await submitForm();
+    });
+  }
+
+  async function submitForm() {
+    setLoading(true);
+    const fields = [
+      { name: "firstname",                                           value: collected.firstname || "" },
+      { name: "lastname",                                            value: collected.lastname  || "" },
+      { name: "email",                                               value: collected.email     || "" },
+      { name: "phone",                                               value: collected.phone     || "" },
+      { name: "name",                                                value: collected.company   || "" },
+      { name: "cnpj",                                                value: collected.cnpj      || "" },
+      { name: "tg_segmento_da_sua_empresa",                          value: collected.segmento  || "" },
+      { name: "tg_o_que_faria_sua_empresa_decidir_se_associar_hoje", value: collected.decisao   || "" }
+    ];
+    try {
+      await submitHubSpot(fields);
+      setLoading(false);
+      await addBot(`Solicitação recebida com sucesso, <b>${collected.firstname}</b>! ✅`);
+      await delay(400);
+      await addBot("Obrigado pelo seu interesse em <b>fazer parte da Centrorochas</b>. Um de nossos consultores entrará em contato nas próximas horas através do <b>e-mail corporativo ou telefone</b> informado para apresentar a proposta ideal de enquadramento para o seu negócio. 🪨");
+    } catch(e) {
+      setLoading(false);
+      console.error("Erro HubSpot:", e);
+      await addBot("Desculpe, ocorreu um erro ao enviar suas informações. Por favor, tente novamente em instantes.");
+    }
+  }
+
+  // ========== MOBILE KEYBOARD ==========
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", () => {
+      const ia = document.querySelector(".input-area");
+      if (ia) ia.style.bottom = (window.innerHeight - window.visualViewport.height) + "px";
+      scrollBot();
+    });
+  }
+
+  // ========== INIT ==========
+  start();
 })();
 </script>
 
