@@ -5,6 +5,437 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Centrorochas – Faça parte do ecossistema</title>
   <link rel="icon" type="image/png" href="https://cdn.prod.website-files.com/64ee410e3b1bad3b81f3a7bc/67b39ab38bb32132b219b2b6_webclip.png">
+
+  <style>
+
+/* Scroll no campo mercados_conhecidos — estrutura HSFC */
+
+.hsfc-CheckboxFieldGroup__Options {
+
+    max-height: 220px !important;
+
+    overflow-y: scroll !important;
+
+    overflow-x: hidden !important;
+
+    border: 1px solid #cbd6e2 !important;
+
+    padding: 10px 15px !important;
+
+    border-radius: 5px !important;
+
+    background-color: #fcfcfc !important;
+
+    display: block !important;
+
+    box-sizing: border-box !important;
+
+}
+
+
+
+/* Proteção LGPD */
+
+.legal-consent-container .hsfc-CheckboxFieldGroup__Options {
+
+    max-height: none !important;
+
+    overflow: visible !important;
+
+    border: none !important;
+
+    padding: 0 !important;
+
+    background-color: transparent !important;
+
+}
+
+</style>
+
+
+
+<!--
+
+  SCRIPT: Autopreenchimento de dados via CNPJ (BrasilAPI / Receita Federal)
+
+
+
+  Usa a API oficial HubSpotFormsV4 (forms novos rodam em iframe cross-origin,
+
+  não dá pra acessar o DOM deles diretamente).
+
+-->
+
+<script>
+
+(function () {
+
+  var CNPJ_FIELD_SUFFIX = "cnpj";
+
+
+
+  // ===== AJUSTAR AQUI: de/para do dropdown de País =====
+
+  var PAIS_DE_PARA = {
+
+    "BR": "Brasil" // troque "Brasil" pelo valor interno real do dropdown
+
+    // adicione outros países aqui se necessário, ex: "US": "Estados Unidos"
+
+  };
+
+
+
+  function montaLogradouro(d) {
+
+    var partes = [];
+
+    if (d.descricao_tipo_de_logradouro || d.logradouro) {
+
+      partes.push(((d.descricao_tipo_de_logradouro || "") + " " + (d.logradouro || "")).trim());
+
+    }
+
+    if (d.numero) partes.push(d.numero);
+
+    return partes.join(", ");
+
+  }
+
+
+
+  function pegaPais(d) {
+
+    // BrasilAPI não retorna um código de país explícito para empresas nacionais;
+
+    // assume-se Brasil, a menos que exista sede no exterior (nome_cidade_exterior preenchido)
+
+    var codigo = d.nome_cidade_exterior ? "EXTERIOR" : "BR";
+
+    return PAIS_DE_PARA[codigo] || "";
+
+  }
+
+
+
+  // Mapeamento por SUFIXO: usado quando o mesmo valor deve ir pra todos os
+
+  // campos que terminam com esse nome (contato + empresa), pois ambos os
+
+  // objetos compartilham o mesmo internal name.
+
+  var FIELD_SUFFIX_MAP = {
+
+    "firstname": function (d) {
+
+      return (d.qsa && d.qsa.length > 0) ? d.qsa[0].nome_socio : "";
+
+    },
+
+    "email": function (d) {
+
+      return d.email || "";
+
+    },
+
+    "name": function (d) {
+
+      return d.nome_fantasia || d.razao_social || "";
+
+    },
+
+    "phone": function (d) {
+
+      return "55" + d.ddd_telefone_1;
+
+    },
+
+    "razao_social": function (d) {
+
+      return d.razao_social || "";
+
+    },
+
+    "cnae": function (d) {
+
+      return d.cnae_fiscal || "";
+
+    },
+
+    "address": montaLogradouro,
+
+    "complemento_do_logradouro": function (d) {
+
+      return d.complemento || "";
+
+    },
+
+    "city": function (d) {
+
+      return d.municipio || "";
+
+    },
+
+    "cep": function (d) {
+
+      return d.cep || "";
+
+    },
+
+    "pais": pegaPais
+
+  };
+
+
+
+  function log() {
+
+    console.log.apply(console, ["[Autofill CNPJ]"].concat(Array.prototype.slice.call(arguments)));
+
+  }
+
+
+
+  function limpaCNPJ(v) {
+
+    return (v || "").replace(/\D/g, "");
+
+  }
+
+
+
+  function encontraCampos(nomes, sufixo) {
+
+    return nomes.filter(function (n) {
+
+      return n === sufixo || n.endsWith("/" + sufixo);
+
+    });
+
+  }
+
+
+
+  function preencheCampo(form, nomeCampo, valor) {
+
+    if (!valor) {
+
+      log('Nenhum valor disponível para "' + nomeCampo + '".');
+
+      return;
+
+    }
+
+    form.getFieldValue(nomeCampo).then(function (atual) {
+
+      if (atual) {
+
+        log('Campo "' + nomeCampo + '" já preenchido, pulando.');
+
+        return;
+
+      }
+
+      form.setFieldValue(nomeCampo, valor);
+
+      log('Campo "' + nomeCampo + '" preenchido com:', valor);
+
+    });
+
+  }
+
+
+
+  function preencheForm(dados, form, nomes) {
+
+    log("Dados recebidos da BrasilAPI:", dados);
+
+
+
+    // Campos com valor único (mesmo valor pra contato + empresa quando aplicável)
+
+    Object.keys(FIELD_SUFFIX_MAP).forEach(function (sufixo) {
+
+      var campos = encontraCampos(nomes, sufixo);
+
+      if (campos.length === 0) {
+
+        console.warn('[Autofill CNPJ] Nenhum campo com sufixo "' + sufixo + '" encontrado entre:', nomes);
+
+        return;
+
+      }
+
+      var valor = FIELD_SUFFIX_MAP[sufixo](dados);
+
+      campos.forEach(function (nomeCampo) {
+
+        preencheCampo(form, nomeCampo, valor);
+
+      });
+
+    });
+
+
+
+    // Telefones - valores DIFERENTES para contato e empresa (precisa dos nomes exatos)
+
+    if (nomes.indexOf(CONTACT_PHONE_FIELD) !== -1) {
+
+      preencheCampo(form, CONTACT_PHONE_FIELD, dados.ddd_telefone_1 || "");
+
+    } else {
+
+      console.warn("[Autofill CNPJ] CONTACT_PHONE_FIELD não configurado corretamente ainda.");
+
+    }
+
+
+
+    if (nomes.indexOf(COMPANY_PHONE_FIELD) !== -1) {
+
+      preencheCampo(form, COMPANY_PHONE_FIELD, dados.ddd_telefone_2 || dados.ddd_telefone_1 || "");
+
+    } else {
+
+      console.warn("[Autofill CNPJ] COMPANY_PHONE_FIELD não configurado corretamente ainda.");
+
+    }
+
+  }
+
+
+
+  function buscaCNPJ(cnpj, form, nomes) {
+
+    log("Buscando CNPJ na BrasilAPI:", cnpj);
+
+    fetch("https://brasilapi.com.br/api/cnpj/v1/" + cnpj)
+
+      .then(function (res) {
+
+        if (!res.ok) throw new Error("CNPJ não encontrado ou inválido (status " + res.status + ")");
+
+        return res.json();
+
+      })
+
+      .then(function (dados) {
+
+        preencheForm(dados, form, nomes);
+
+      })
+
+      .catch(function (err) {
+
+        console.warn("[Autofill CNPJ] Não foi possível buscar dados:", err.message);
+
+      });
+
+  }
+
+
+
+  log("Script carregado. Aguardando evento hs-form-event:on-ready...");
+
+
+
+  window.addEventListener("hs-form-event:on-ready", function (event) {
+
+    if (typeof HubSpotFormsV4 === "undefined") {
+
+      console.warn("[Autofill CNPJ] HubSpotFormsV4 não está disponível nesta página.");
+
+      return;
+
+    }
+
+
+
+    var form = HubSpotFormsV4.getFormFromEvent(event);
+
+    log("Form pronto. ID:", form.getFormId());
+
+
+
+    form.getFormFieldValues().then(function (fields) {
+
+      var nomes = fields.map(function (f) {
+
+        return f.name;
+
+      });
+
+      log("Campos disponíveis no form:", nomes);
+
+
+
+      var candidatosCnpj = encontraCampos(nomes, CNPJ_FIELD_SUFFIX);
+
+      if (candidatosCnpj.length === 0) {
+
+        console.warn('[Autofill CNPJ] Campo de CNPJ (sufixo "' + CNPJ_FIELD_SUFFIX + '") não encontrado entre:', nomes);
+
+        return;
+
+      }
+
+      var cnpjFieldName = candidatosCnpj[0];
+
+      log("Campo de CNPJ identificado:", cnpjFieldName);
+
+
+
+      var ultimoValorLimpo = "";
+
+      var debounce = null;
+
+      var jaBuscou = false;
+
+
+
+      setInterval(function () {
+
+        form.getFieldValue(cnpjFieldName).then(function (valorAtual) {
+
+          var limpo = limpaCNPJ(valorAtual);
+
+          if (limpo === ultimoValorLimpo) return;
+
+
+
+          ultimoValorLimpo = limpo;
+
+          jaBuscou = false;
+
+          clearTimeout(debounce);
+
+
+
+          debounce = setTimeout(function () {
+
+            if (limpo.length === 14 && !jaBuscou) {
+
+              jaBuscou = true;
+
+              buscaCNPJ(limpo, form, nomes);
+
+            }
+
+          }, 800);
+
+        });
+
+      }, 500);
+
+    });
+
+  });
+
+})();
+
+</script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
